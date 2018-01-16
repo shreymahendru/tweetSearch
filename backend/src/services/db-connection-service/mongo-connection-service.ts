@@ -2,16 +2,15 @@ import { DbConnectionService } from "./db-connection-service";
 import { inject } from "n-ject";
 import { ConfigService } from "../config-service/config-service";
 import { given } from "n-defensive";
-import * as mongoose from "mongoose";
-import { MongooseThenable } from "mongoose";
+var mongoose = require("mongoose");
 
-(mongoose as any).Promise = global.Promise;
+(<any>mongoose).Promise = global.Promise;
 
 @inject("ConfigService")
 export class MongoConnectionService implements DbConnectionService
 {
     private readonly _configService: ConfigService;
-    private _mongoConnection: MongooseThenable;
+    private _mongoConnection: boolean;
 
     public constructor(configService: ConfigService)
     {
@@ -19,17 +18,18 @@ export class MongoConnectionService implements DbConnectionService
             .ensureHasValue();
 
         this._configService = configService;
-        this._mongoConnection = null;
+        this._mongoConnection = false;
     }
     
-    public connect(): MongooseThenable
+    public connect(): void
     {
         let mongoUrl = this._configService.getDbUrl();
         if (this._mongoConnection)
-            return this._mongoConnection;    
+            return;    
         
-        this._mongoConnection = mongoose.connect(mongoUrl, { useMongoClient: true });
-        return this._mongoConnection;
+        mongoose.connect(mongoUrl, { useMongoClient: true });
+        this._mongoConnection = true; 
+        // return this._mongoConnection;
     }
     
 }

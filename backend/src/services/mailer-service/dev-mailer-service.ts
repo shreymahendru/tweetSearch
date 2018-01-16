@@ -1,6 +1,5 @@
 import { MailerService, EmailConfiguartion } from "./mailer-service";
 import { User } from "../../domain/models/user";
-import { createTransport } from "nodemailer";
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from "../config-service/config-service";
 import { inject } from "n-ject";

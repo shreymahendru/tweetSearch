@@ -3,7 +3,7 @@ import { ConfigurationManager } from "n-config";
 import { WebApp } from "n-web";
 import { DefaultConfigService } from "./services/config-service/default-config-service";
 import { AppExceptionHandler } from "./exceptions/app-exception-handler";
-import { ConsoleLogger } from "n-log/dist/console-logger";
+import { ConsoleLogger } from "./services/logger-service/console-logger-service";
 import { BcryptHashingService } from "./services/hashing-service/bcrypt-hashing-service";
 import { DefaultUserFactory } from "./domain/factories/user-factory/default-user-factory";
 import { DefaultSearchTermFactory } from "./domain/factories/search-term-factory/default-search-term-factory";

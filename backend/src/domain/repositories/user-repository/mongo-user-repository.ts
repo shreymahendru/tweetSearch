@@ -2,25 +2,27 @@ import { UserRepository } from "./user-repository";
 import { inject } from "n-ject/dist/inject";
 import { DbConnectionService } from "../../../services/db-connection-service/db-connection-service";
 import { given } from "n-defensive";
-import { MongooseThenable, Schema, Model, Document } from "mongoose";
+// import { MongooseThenable, Schema, Model, Document } from "mongoose";
+// var mongoose = require("mongoose");
+import mongoose from "mongoose";
 import { User } from "../../models/user";
 
-interface UserModel extends Document
-{
-    email: string,
-    passwordHash: string,
-    username: string,
-    confirmed: boolean,
-    confirmationToken: string
-}
+
+// type UserModel = mongoose.Document &
+// {
+//     email: string,
+//     passwordHash: string,
+//     username: string,
+//     confirmed: boolean,
+//     confirmationToken: string
+// }
 
 
 @inject("DbConnectionService")
 export class MongoUserRepository implements UserRepository
 {
     private readonly _dbConnectionService: DbConnectionService;
-    private _mongooseInstance: MongooseThenable;
-    private _userModel: Model<UserModel>;
+    private _userModel: mongoose.Model;
 
     public constructor(dbConnectionService: DbConnectionService)
     {
@@ -33,9 +35,9 @@ export class MongoUserRepository implements UserRepository
     
     private setUpModel()
     {
-        this._mongooseInstance = this._dbConnectionService.connect() as MongooseThenable;
+        this._dbConnectionService.connect();
         
-        const userSchema = new Schema({
+        const userSchema = new mongoose.Schema({
             id: { type: String, required: true, unique: true },
             email: { type: String, required: true, lowercase: true, unique: true },
             passwordHash: {
@@ -50,7 +52,7 @@ export class MongoUserRepository implements UserRepository
             }
         });
         
-        this._userModel = this._mongooseInstance.model("user", userSchema);
+        this._userModel = mongoose.model("User", userSchema);
     }
     
     public async save(user: User): Promise<void>
@@ -129,7 +131,7 @@ export class MongoUserRepository implements UserRepository
             await userModel.remove();
     }
     
-    private modelToUser(userModel: UserModel): User
+    private modelToUser(userModel: any): User
     {
         let user = new User(userModel.id, userModel.username, userModel.email,
             userModel.confirmed, userModel.confirmationToken, userModel.passwordHash, [])

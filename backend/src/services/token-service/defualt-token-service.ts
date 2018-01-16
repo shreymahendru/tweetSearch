@@ -1,6 +1,6 @@
 import { TokenService } from "./token-service";
 import { given } from "n-defensive";
-import { sign, verify, TokenExpiredError, decode, JsonWebTokenError } from "jsonwebtoken";
+import { sign, verify, TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 import { inject } from "n-ject";
 import { ConfigService } from "../config-service/config-service";
 import { UserTokenExpiredException } from "../../exceptions/user-token-expired-exception";
@@ -31,7 +31,12 @@ export class DefaultTokenService implements TokenService
             .ensure(t => !t.isEmptyOrWhiteSpace());
         
         let secret = this._configService.getJWTSecret();
-        let token = sign({ email }, secret);
+        
+        let obj: Object = {
+            email
+        }
+        
+        let token = sign(obj, secret);
         return token;
     }
     
@@ -45,7 +50,11 @@ export class DefaultTokenService implements TokenService
         let secret = this._configService.getJWTSecret();
         let ttl = this._configService.getEmailTokenTTL();
         
-        let token = sign({ id }, secret, { expiresIn: ttl });
+        let obj: Object = {
+            id
+        }
+        
+        let token = sign(obj, secret, { expiresIn: ttl });
         return token;
     }
     
@@ -59,7 +68,7 @@ export class DefaultTokenService implements TokenService
         let secret = this._configService.getJWTSecret();
         try
         {
-            let decoded = verify(token, secret);   
+            verify(token, secret);   
         }
         catch (err)
         {
@@ -101,10 +110,11 @@ export class DefaultTokenService implements TokenService
         
         
         let secret = this._configService.getJWTSecret();
-        let token = sign({
+        let obj: Object = {
             email: user.email,
             isConfirmedEmail: user.isConfirmedEmail
-        }, secret, {
+        }
+        let token = sign(obj, secret, {
             expiresIn: authTokenTTL
         });
         

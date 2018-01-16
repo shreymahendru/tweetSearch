@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import { SearchTerm } from "../../models/search-term";
 import { DbConnectionService } from "../../../services/db-connection-service/db-connection-service";
 import { given } from "n-defensive";
+import { inject } from "n-ject";
 
 interface SearchTermModel
 {
@@ -14,6 +15,7 @@ interface SearchTermModel
     remove: () => Promise<void>;
 }
 
+@inject("DbConnectionService")
 export class MongoSearchTermRepository implements SearchTermRepository
 {
     private readonly _dbConnectionService: DbConnectionService;
@@ -36,9 +38,6 @@ export class MongoSearchTermRepository implements SearchTermRepository
         const searchTermSchema = new mongoose.Schema({
             id: { type: String, required: true, unique: true },
             term: { type: String, required: true, lowercase: true, unique: true },
-            passwordHash: {
-                type: String, required: true
-            },
             numberOfTimes: { type: Number, required: true }
         });
 

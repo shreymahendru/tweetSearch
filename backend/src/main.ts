@@ -19,6 +19,8 @@ import { ConfirmEmailController } from "./controllers/auth/confirm-email-control
 import { ResetPasswordController } from "./controllers/auth/reset-password-controller";
 import { ResetPasswordRequestController } from "./controllers/auth/reset-password-request-controller";
 import { ValidateTokenController } from "./controllers/auth/vaildate-token-controller";
+import { SearchTweetController } from "./controllers/tweeter-search/search-tweet-controller";
+import { DefaultTwitterService } from "./services/twitter-service/default-twitter-service" ;
 
 class Installer implements ComponentInstaller
 {
@@ -37,7 +39,8 @@ class Installer implements ComponentInstaller
             .registerSingleton("UserFactory", DefaultUserFactory)
             .registerSingleton("SearchTermFactory", DefaultSearchTermFactory)
             .registerSingleton("UserRepository", MongoUserRepository)
-            .registerSingleton("SearchTermRepository", MongoSearchTermRepository);
+            .registerSingleton("SearchTermRepository", MongoSearchTermRepository)
+            .registerSingleton("TwitterService", DefaultTwitterService);
             // .registerSingleton()
 
     }
@@ -45,7 +48,7 @@ class Installer implements ComponentInstaller
 
 const controllers: Array<Function> = [LoginController, SignupController,
     ConfirmEmailController, ResetPasswordController,
-    ResetPasswordRequestController, ValidateTokenController];
+    ResetPasswordRequestController, ValidateTokenController, SearchTweetController];
 
 const app = new WebApp(ConfigurationManager.getConfig<number>("port"))
     .useInstaller(new Installer())

@@ -10,5 +10,11 @@
     "emailPort": "2525",
     "emailUser": "c39ac7aaea6013",
     "emailPassword": "fda84ab39e997c",
-    "fromEmail": "'tweetSearch' <info@tweetSearch.com>"
+    "fromEmail": "'tweetSearch' <info@tweetSearch.com>", 
+    "twitterConfig": {
+        "consumer_key": "HAcFFX1Z8D3y5EdWXUT6CKb64",
+        "consumer_secret": "UZBJ2NTEWczIgmuaH9Z7ytkEvRToLTsumLoOs0sRwJvH4C1YJB",
+        "access_token_key": "103889055-EWEYdFC7kzdURgtDrqH21HI7BlPzA52r1xk5Sjzg",
+        "access_token_secret": "YCfz6dgYJoBYKRzDlSJ4PQlaBlYOtOEV8qn8IR0vY4BMb"  
+    }
 }

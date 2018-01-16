@@ -1,4 +1,5 @@
 import { EmailConfiguartion } from "../mailer-service/mailer-service";
+import { TwitterConfig } from "../twitter-service/twitter-service";
 
 export interface ConfigService
 {
@@ -8,4 +9,5 @@ export interface ConfigService
     getJWTSecret(): string;
     getDbUrl(): string;
     getEmailConfiguration(): EmailConfiguartion;
+    getTwitterConfig(): TwitterConfig;
 }

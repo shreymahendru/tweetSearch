@@ -1,6 +1,7 @@
 import { ConfigService } from "./config-service";
 import { ConfigurationManager } from "n-config";
 import { EmailConfiguartion } from "../mailer-service/mailer-service";
+import { TwitterConfig } from "../twitter-service/twitter-service";
 
 export class DefaultConfigService implements ConfigService
 {   
@@ -47,6 +48,12 @@ export class DefaultConfigService implements ConfigService
     public getDbUrl(): string
     {
         let value = ConfigurationManager.getConfig<string>("dbUrl");
+        return value;
+    }
+    
+    public getTwitterConfig(): TwitterConfig
+    {
+        let value = ConfigurationManager.getConfig<TwitterConfig>("twitterConfig")
         return value;
     }
 }

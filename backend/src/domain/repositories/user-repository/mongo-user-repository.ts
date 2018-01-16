@@ -54,11 +54,11 @@ export class MongoUserRepository implements UserRepository
         
         const userSchema = new mongoose.Schema({
             id: { type: String, required: true, unique: true },
-            email: { type: String, required: true, lowercase: true, unique: true },
+            email: { type: String, required: true, lowercase: true },
             passwordHash: {
                 type: String, required: true
             },
-            username: { type: String, required: true, lowercase: true, unique: true },
+            username: { type: String, required: true, lowercase: true },
             confirmed: {
                 type: Boolean, required: true, default: false
             },
@@ -66,10 +66,9 @@ export class MongoUserRepository implements UserRepository
                 type: String, required: false
             }, 
             userSearchTerm: [{
-                id: { type: String, required: true, unique: true },
+                id: { type: String, required: true},
                 searchTermId: {
                     type: String,
-                    ref: "SearchTerm",
                     required: true
                 }, 
                 time: {type: Number, required: true}

@@ -59,6 +59,7 @@
         "n-validate": "git+https://github.com/nivinjoseph/n-validate.git",
         "n-web": "git+https://github.com/nivinjoseph/n-web.git",
         "nodemailer": "^4.4.1",
+        "twitter": "^1.7.1",
         "uuid": "^3.1.0"
     }
 }

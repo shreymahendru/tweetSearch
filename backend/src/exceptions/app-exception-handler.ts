@@ -9,6 +9,7 @@ import { UserAlreadyExistsException } from "./user-already-exists-exception";
 import { SearchTermAlreadyExistsException } from "./search-term-already-exisits-exception";
 import { UserTokenExpiredException } from "./user-token-expired-exception";
 import { UserInvalidTokenException } from "./user-invalid-token-exception";
+import { TweetRetrivalException } from "./tweet-retrival-exception";
 
 @inject("Logger")
 export class AppExceptionHandler extends ExceptionHandler
@@ -47,7 +48,11 @@ export class AppExceptionHandler extends ExceptionHandler
         else if (exp instanceof UserInvalidTokenException)
         {
             await this.handleUserInvalidTokenExceptionn(exp);
-        }        
+        }       
+        else if (exp instanceof TweetRetrivalException)
+        {
+            await this.handleTweetRetrivalException(exp);
+        }            
         else
         {
             throw new HttpException(500, "We encountered a problem while processing your request");
@@ -82,5 +87,11 @@ export class AppExceptionHandler extends ExceptionHandler
     {
         await this._logger.logInfo("Invalid Token");
         throw new HttpException(401, "Token is Invalid");
+    }
+    
+    private async handleTweetRetrivalException(exp: TweetRetrivalException)
+    {
+        await this._logger.logError("Can't contact twitter.");
+        throw new HttpException(500, exp.message);
     }
 }

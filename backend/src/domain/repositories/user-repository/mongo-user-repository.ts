@@ -176,8 +176,10 @@ export class MongoUserRepository implements UserRepository
             return new UserSearchTerm(t.id, searchTerm, t.time);
         });
         
+        let sortedSearchTerms = searchTerms.sort((a, b) => b.timeOfSearch - a.timeOfSearch);
+        
         let user = new User(userModel.id, userModel.username, userModel.email,
-            userModel.confirmed, userModel.confirmationToken, userModel.passwordHash, searchTerms)
+            userModel.confirmed, userModel.confirmationToken, userModel.passwordHash, sortedSearchTerms)
         return user;
     }
 }

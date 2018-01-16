@@ -17,6 +17,7 @@ export class User
     public get id(): string { return this._id; }
     public get email(): string { return this._email; }
     public get name(): string { return this._name; }
+    public get passwordHash(): string { return this._passwordHash; }
     public get isConfirmedEmail(): boolean { return this._isConfirmedEmail; }
     public get confirmationToken(): string { return this._confirmationToken;}
     public get searchHistory(): Array<UserSearchTerm> { return this._searchHistory.map(t => t); }

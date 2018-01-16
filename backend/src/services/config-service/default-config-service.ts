@@ -1,13 +1,38 @@
 import { ConfigService } from "./config-service";
 import { ConfigurationManager } from "n-config";
+import { EmailConfiguartion } from "../mailer-service/mailer-service";
 
 export class DefaultConfigService implements ConfigService
 {   
-    public getTokenTTL(): string
+    public getEmailConfiguration(): EmailConfiguartion
     {
-        let value = ConfigurationManager.getConfig<string>("tokenTTL");
+        let host = ConfigurationManager.getConfig<string>("emailHost");
+        let port = ConfigurationManager.getConfig<number>("emailPort");
+        let emailUser = ConfigurationManager.getConfig<string>("emailUser");
+        let emailPassword = ConfigurationManager.getConfig<string>("emailPassword");
+        let fromEmail = ConfigurationManager.getConfig<string>("fromEmail");
+        return {
+            host: host,
+            port: port,
+            auth: {
+                user: emailUser,
+                pass: emailPassword
+            }, 
+            email: fromEmail
+        };
+    }
+    public getEmailTokenTTL(): string
+    {
+        let value = ConfigurationManager.getConfig<string>("emailTokenTTL");
         return value;
     }
+    
+    public getAuthTokenTTL(): string
+    {
+        let value = ConfigurationManager.getConfig<string>("authTokenTTL");
+        return value;
+    }
+    
     public getJWTSecret(): string
     {
         let value = ConfigurationManager.getConfig<string>("JWTSecret");
@@ -16,6 +41,12 @@ export class DefaultConfigService implements ConfigService
     public getBaseUrl(): string
     {
         let value = ConfigurationManager.getConfig<string>("baseUrl");
+        return value;
+    }
+    
+    public getDbUrl(): string
+    {
+        let value = ConfigurationManager.getConfig<string>("dbUrl");
         return value;
     }
 }

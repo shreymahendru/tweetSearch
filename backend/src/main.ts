@@ -8,6 +8,12 @@ import { BcryptHashingService } from "./services/hashing-service/bcrypt-hashing-
 import { DefaultUserFactory } from "./domain/factories/user-factory/default-user-factory";
 import { DefaultSearchTermFactory } from "./domain/factories/search-term-factory/default-search-term-factory";
 import { DefaultTokenService } from "./services/token-service/defualt-token-service";
+import { DefaultLinkGenerationService } from "./services/link-generation-service/default-link-geneartion-service";
+import { DevMailerService } from "./services/mailer-service/dev-mailer-service";
+import { MongoConnectionService } from "./services/db-connection-service/mongo-connection-service";
+import { MongoUserRepository } from "./domain/repositories/user-repository/mongo-user-repository";
+import { LoginController } from "./controllers/user/login-controller";
+import { SignupController } from "./controllers/user/signup-controller";
 
 class Installer implements ComponentInstaller
 {
@@ -20,13 +26,18 @@ class Installer implements ComponentInstaller
             .registerSingleton("Logger", ConsoleLogger)
             .registerSingleton("HashingService", BcryptHashingService)
             .registerSingleton("TokenService", DefaultTokenService)
+            .registerSingleton("LinkGenerationService", DefaultLinkGenerationService)
+            .registerSingleton("DbConnectionService", MongoConnectionService)
+            .registerSingleton("MailerService", isDev ? DevMailerService : null)
             .registerSingleton("UserFactory", DefaultUserFactory)
             .registerSingleton("SearchTermFactory", DefaultSearchTermFactory)
+            .registerSingleton("UserRepository", MongoUserRepository);
+            // .registerSingleton()
 
     }
 }
 
-const controllers: Array<Function> = [];
+const controllers: Array<Function> = [LoginController, SignupController];
 
 const app = new WebApp(ConfigurationManager.getConfig<number>("port"))
     .useInstaller(new Installer())

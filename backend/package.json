@@ -7,7 +7,7 @@
     "scripts": {
         "ts-build": "tsc -p .",
         "ts-build-watch": "npm run ts-build -- -w",
-        "nodemon": "nodemon --debug ./src/main.js mode=dev",
+        "nodemon": "nodemon --inspect ./src/main.js mode=dev",
         "predebug": "npm run ts-build",
         "debug": "npm run ts-build-watch & npm run nodemon",
         "prebuild": "npm install",

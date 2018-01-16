@@ -1,5 +1,14 @@
 {
     "mode": "dev",
     "port": 3000,
-    "baseUrl": "http://localhost:3000"
+    "baseUrl": "http://localhost:3000", 
+    "dbUrl": "mongodb://localhost:27017/tweetSearch",
+    "JWTSecret": "mysecret",
+    "authTokenTTL": "5h",
+    "emailTokenTTL": "1h",
+    "emailHost": "smtp.mailtrap.io",
+    "emailPort": "2525",
+    "emailUser": "c39ac7aaea6013",
+    "emailPassword": "fda84ab39e997c",
+    "fromEmail": "'tweetSearch' <info@tweetSearch.com>"
 }

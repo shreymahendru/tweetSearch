@@ -14,6 +14,7 @@ import { MongoConnectionService } from "./services/db-connection-service/mongo-c
 import { MongoUserRepository } from "./domain/repositories/user-repository/mongo-user-repository";
 import { LoginController } from "./controllers/user/login-controller";
 import { SignupController } from "./controllers/user/signup-controller";
+import { MongoSearchTermRepository } from "./domain/repositories/search-term-repository/mongo-search-term-repository";
 
 class Installer implements ComponentInstaller
 {
@@ -31,7 +32,8 @@ class Installer implements ComponentInstaller
             .registerSingleton("MailerService", isDev ? DevMailerService : null)
             .registerSingleton("UserFactory", DefaultUserFactory)
             .registerSingleton("SearchTermFactory", DefaultSearchTermFactory)
-            .registerSingleton("UserRepository", MongoUserRepository);
+            .registerSingleton("UserRepository", MongoUserRepository)
+            .registerSingleton("SearchTermRepository", MongoSearchTermRepository);
             // .registerSingleton()
 
     }

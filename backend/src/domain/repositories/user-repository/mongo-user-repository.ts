@@ -4,7 +4,7 @@ import { DbConnectionService } from "../../../services/db-connection-service/db-
 import { given } from "n-defensive";
 // import { MongooseThenable, Schema, Model, Document } from "mongoose";
 // var mongoose = require("mongoose");
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { User } from "../../models/user";
 
 

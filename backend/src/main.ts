@@ -14,6 +14,7 @@ class Installer implements ComponentInstaller
         registry
             .registerSingleton("ConfigService", isDev ? DefaultConfigService : null)
             .registerSingleton("Logger", ConsoleLogger);
+            // .registerSingleton("")
 
     }
 }

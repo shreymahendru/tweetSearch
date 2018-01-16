@@ -5,6 +5,8 @@ import { HttpException } from "n-web";
 import { inject } from "n-ject";
 import { Logger } from "./../services/logger-service/logger-service";
 import { given } from "n-defensive";
+import { UserAlreadyExistsException } from "./user-already-exists-exception";
+import { SearchTermAlreadyExistsException } from "./search-term-already-exisits-exception";
 
 @inject("Logger")
 export class AppExceptionHandler extends ExceptionHandler
@@ -28,14 +30,35 @@ export class AppExceptionHandler extends ExceptionHandler
         {
             await this.handleUserNotFoundException(exp as UserNotFoundException);
         }
+        else if (exp instanceof UserAlreadyExistsException)
+        {
+            await this.handleUserAlreadyExistsException(exp as UserAlreadyExistsException);
+        }
+        else if (exp instanceof SearchTermAlreadyExistsException)
+        {
+            await this.handleSearchTermAlreadyExistsException(exp as SearchTermAlreadyExistsException)
+        }
         else
         {
             throw new HttpException(500, "We encountered a problem while processing your request");
         }
     }
 
-    private handleUserNotFoundException(exp: UserNotFoundException): Promise<any>
+    private async handleUserNotFoundException(exp: UserNotFoundException): Promise<any>
     {
-        throw new HttpException(404, "user not found");
+        await this._logger.logError(exp);
+        throw new HttpException(404, exp.message);
+    }
+    
+    private async handleUserAlreadyExistsException(exp: UserAlreadyExistsException): Promise<any>
+    {
+        await this._logger.logError(exp);
+        throw new HttpException(409, exp.message);
+    }
+    
+    private async handleSearchTermAlreadyExistsException(exp: SearchTermAlreadyExistsException): Promise<any>
+    {
+        await this._logger.logError(exp);
+        throw new HttpException(500, "We encountered a problem while processing your request");
     }
 }

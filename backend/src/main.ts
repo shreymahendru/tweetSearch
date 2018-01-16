@@ -22,6 +22,7 @@ import { ValidateTokenController } from "./controllers/auth/vaildate-token-contr
 import { SearchTweetController } from "./controllers/tweeter-search/search-tweet-controller";
 import { DefaultTwitterService } from "./services/twitter-service/default-twitter-service" ;
 import { AuthHandler } from "./security/auth-handler";
+import { NMostSearchedController } from "./controllers/tweeter-search/n-most-searched-controller";
 
 class Installer implements ComponentInstaller
 {
@@ -49,7 +50,7 @@ class Installer implements ComponentInstaller
 
 const controllers: Array<Function> = [LoginController, SignupController,
     ConfirmEmailController, ResetPasswordController,
-    ResetPasswordRequestController, ValidateTokenController, SearchTweetController];
+    ResetPasswordRequestController, ValidateTokenController, SearchTweetController, NMostSearchedController];
 
 const app = new WebApp(ConfigurationManager.getConfig<number>("port"))
     .useInstaller(new Installer())

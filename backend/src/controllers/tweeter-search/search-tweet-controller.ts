@@ -77,6 +77,7 @@ export class SearchTweetController extends Controller
         if (existingSearchTerm)
         {
             existingSearchTerm.increaseCount();
+            await this._searchTermRepository.save(existingSearchTerm);
             user.AddToHistory(existingSearchTerm);
             await this._userRepository.save(user);
         }

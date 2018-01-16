@@ -1,4 +1,6 @@
 export interface ConfigService
 {
-    getBaseUrl(): Promise<string>;
+    getBaseUrl(): string;
+    getTokenTTL(): string;
+    getJWTSecret(): string;
 }

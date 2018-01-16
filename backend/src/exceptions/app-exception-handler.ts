@@ -7,6 +7,8 @@ import { Logger } from "./../services/logger-service/logger-service";
 import { given } from "n-defensive";
 import { UserAlreadyExistsException } from "./user-already-exists-exception";
 import { SearchTermAlreadyExistsException } from "./search-term-already-exisits-exception";
+import { UserTokenExpiredException } from "./user-token-expired-exception";
+import { UserInvalidTokenException } from "./user-invalid-token-exception";
 
 @inject("Logger")
 export class AppExceptionHandler extends ExceptionHandler
@@ -38,6 +40,14 @@ export class AppExceptionHandler extends ExceptionHandler
         {
             await this.handleSearchTermAlreadyExistsException(exp as SearchTermAlreadyExistsException)
         }
+        else if (exp instanceof UserTokenExpiredException)
+        {
+            await this.handleUserTokenExpiredException(exp);
+        }    
+        else if (exp instanceof UserInvalidTokenException)
+        {
+            await this.handleUserInvalidTokenExceptionn(exp);
+        }        
         else
         {
             throw new HttpException(500, "We encountered a problem while processing your request");
@@ -60,5 +70,17 @@ export class AppExceptionHandler extends ExceptionHandler
     {
         await this._logger.logError(exp);
         throw new HttpException(500, "We encountered a problem while processing your request");
+    }
+    
+    private async handleUserTokenExpiredException(exp: UserTokenExpiredException)
+    {
+        await this._logger.logInfo("Token Expired");
+        throw new HttpException(401, "Token has expired");
+    }
+    
+    private async handleUserInvalidTokenExceptionn(exp: UserInvalidTokenException)
+    {
+        await this._logger.logInfo("Invalid Token");
+        throw new HttpException(401, "Token is Invalid");
     }
 }

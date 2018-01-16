@@ -31,10 +31,10 @@ export class DefaultLinkGenerationService implements LinkGenerationService
 
         let baseUrl = this._configService.getBaseUrl();
 
-        baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl : baseUrl + "/";
+        baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
         let token = this._tokenService.generateResetPasswordToken(user.id);
         let route = Routes.resetPassword.substring(0, Routes.resetPassword.lastIndexOf("/"));
-        let url = `${baseUrl}/${route}/${token}`;
+        let url = `${baseUrl}${route}/${token}`;
         return url;
     }
     
@@ -45,9 +45,9 @@ export class DefaultLinkGenerationService implements LinkGenerationService
 
         let baseUrl = this._configService.getBaseUrl();
 
-        baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl : baseUrl + "/";
+        baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
         let route = Routes.confirmEmail.substring(0, Routes.confirmEmail.lastIndexOf("/"))
-        let url = `${baseUrl}/${route}/${user.confirmationToken}`;
+        let url = `${baseUrl}${route}/${user.confirmationToken}`;
         return url;
     }
 }

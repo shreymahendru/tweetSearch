@@ -2,33 +2,48 @@ import { UserRepository } from "./user-repository";
 import { inject } from "n-ject/dist/inject";
 import { DbConnectionService } from "../../../services/db-connection-service/db-connection-service";
 import { given } from "n-defensive";
-// import { MongooseThenable, Schema, Model, Document } from "mongoose";
-// var mongoose = require("mongoose");
 import * as mongoose from "mongoose";
 import { User } from "../../models/user";
+import { SearchTermRepository } from "../search-term-repository/search-term-repository";
+import { UserSearchTerm } from "../../models/value-objects/user-search-term";
 
 
-// type UserModel = mongoose.Document &
-// {
-//     email: string,
-//     passwordHash: string,
-//     username: string,
-//     confirmed: boolean,
-//     confirmationToken: string
-// }
+interface UserModel
+{
+    id: string;
+    email: string;
+    passwordHash: string;
+    username: string;
+    confirmed: boolean;
+    confirmationToken: string;
+    userSearchTerm: Array<{
+        id: string;
+        searchTermId: string;
+        time: number;
+    }>
+    // doing this to work with mongoose. typescript is not working properly with it
+    save: () => Promise<void>;
+    remove: () => Promise<void>;
+}
 
 
-@inject("DbConnectionService")
+@inject("DbConnectionService", "SearchTermRepository")
 export class MongoUserRepository implements UserRepository
 {
     private readonly _dbConnectionService: DbConnectionService;
+    private readonly _searchTermRepository: SearchTermRepository;
     private _userModel: mongoose.Model;
 
-    public constructor(dbConnectionService: DbConnectionService)
+    public constructor(dbConnectionService: DbConnectionService,
+        searchTermRepository: SearchTermRepository)
     {
         given(dbConnectionService, "dbConnectionService")
             .ensureHasValue();
+        given(searchTermRepository, "searchTermRepository")
+            .ensureHasValue();
+        
         this._dbConnectionService = dbConnectionService;
+        this._searchTermRepository = searchTermRepository;
         
         this.setUpModel();
     }
@@ -49,7 +64,16 @@ export class MongoUserRepository implements UserRepository
             },
             confirmationToken: {
                 type: String, required: false
-            }
+            }, 
+            userSearchTerm: [{
+                id: { type: String, required: true, unique: true },
+                searchTermId: {
+                    type: String,
+                    ref: "SearchTerm",
+                    required: true
+                }, 
+                time: {type: Number, required: true}
+            }]
         });
         
         this._userModel = mongoose.model("User", userSchema);
@@ -63,12 +87,18 @@ export class MongoUserRepository implements UserRepository
         let existingUser = await this.get(user.id);
         if (existingUser)
         {
-            let model = await this._userModel.findOne({ id: user.id })
+            let model: UserModel = await this._userModel.findOne({ id: user.id })
             model.email = user.email;
             model.passwordHash = user.passwordHash;
             model.username = user.name;
             model.confirmed = user.isConfirmedEmail;
             model.confirmationToken = user.confirmationToken;
+            model.userSearchTerm = user.searchHistory.map(t => ({
+                id: t.id,
+                searchTermId: t.searchTerm.id,
+                time: t.timeOfSearch 
+            }));
+            
             await model.save();
         }
         else
@@ -79,14 +109,21 @@ export class MongoUserRepository implements UserRepository
                 passwordHash: user.passwordHash,
                 username: user.name,
                 confirmed: user.isConfirmedEmail,
-                confirmationToken: user.confirmationToken
+                confirmationToken: user.confirmationToken,
+                userSearchTerm: user.searchHistory.map(t => ({
+                    id: t.id,
+                    searchTermId: t.searchTerm.id,
+                    time: t.timeOfSearch
+                }))
             });
         }
     }
     
     public async getAll(): Promise<User[]>
     {
-        throw new Error("Method not implemented.");
+        let userModels: UserModel[] = await this._userModel.find({})
+        let users = await userModels.mapAsync(async t => await this.deserialize(t));
+        return users;
     }
     
     public async get(id: string): Promise<User>
@@ -100,7 +137,7 @@ export class MongoUserRepository implements UserRepository
         if (!userModel)
             return null;
         
-        return this.modelToUser(userModel);
+        return await this.deserialize(userModel);
     }
     
     public async getUserByEmail(email: string): Promise<User>
@@ -115,7 +152,7 @@ export class MongoUserRepository implements UserRepository
         if (!userModel)
             return null;
        
-        return this.modelToUser(userModel);
+        return await this.deserialize(userModel);
     }
     
     public async delete(id: string): Promise<void>
@@ -131,11 +168,16 @@ export class MongoUserRepository implements UserRepository
             await userModel.remove();
     }
     
-    private modelToUser(userModel: any): User
+    private async deserialize(userModel: UserModel): Promise<User>
     {
+        let searchTerms: UserSearchTerm[] = await userModel.userSearchTerm.mapAsync(async t =>
+        {
+            let searchTerm = await this._searchTermRepository.get(t.searchTermId);
+            return new UserSearchTerm(t.id, searchTerm, t.time);
+        });
+        
         let user = new User(userModel.id, userModel.username, userModel.email,
-            userModel.confirmed, userModel.confirmationToken, userModel.passwordHash, [])
+            userModel.confirmed, userModel.confirmationToken, userModel.passwordHash, searchTerms)
         return user;
     }
-    
 }

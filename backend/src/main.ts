@@ -21,6 +21,7 @@ import { ResetPasswordRequestController } from "./controllers/auth/reset-passwor
 import { ValidateTokenController } from "./controllers/auth/vaildate-token-controller";
 import { SearchTweetController } from "./controllers/tweeter-search/search-tweet-controller";
 import { DefaultTwitterService } from "./services/twitter-service/default-twitter-service" ;
+import { AuthHandler } from "./security/auth-handler";
 
 class Installer implements ComponentInstaller
 {
@@ -54,6 +55,7 @@ const app = new WebApp(ConfigurationManager.getConfig<number>("port"))
     .useInstaller(new Installer())
     .enableCors()
     .registerControllers(...controllers)
+    .registerAuthenticationHandler(AuthHandler)
     .registerExceptionHandler(AppExceptionHandler);
-
+    
 app.bootstrap();

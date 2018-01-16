@@ -3,6 +3,7 @@ import { HashingService } from "../../services/hashing-service/hashing-service";
 import { SearchTerm } from "./search-term";
 import { UserSearchTerm } from "./value-objects/user-search-term";
 import * as uuid from "uuid";
+import * as moment from "moment";
 
 export class User
 {
@@ -102,14 +103,11 @@ export class User
         this._isConfirmedEmail = true;
     }
     
-    public AddToHistory(SearchTerm: SearchTerm, time: number): boolean
+    public AddToHistory(SearchTerm: SearchTerm): boolean
     {
         given(SearchTerm, "SearchTerm")
             .ensureHasValue()
             .ensureIsObject();
-        given(time, "time")
-            .ensureHasValue()
-            .ensureIsNumber();
         
         let alreadySearched = this._searchHistory
             .find(t =>
@@ -119,7 +117,7 @@ export class User
             return false;
         
         let id = uuid.v4();
-        let newUserSearchTerm = new UserSearchTerm(id, SearchTerm, time);
+        let newUserSearchTerm = new UserSearchTerm(id, SearchTerm, moment().unix());
         this._searchHistory.push(newUserSearchTerm);
         return true;
     }   

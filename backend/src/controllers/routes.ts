@@ -6,7 +6,7 @@ export const signupUser = version + "signup";
 
 
 // auth
-export const confirmEmail = version + "confirmation_email/{token: string}";
+export const confirmEmail = version + "confirmation_email";
 export const validateToken = version + "validate_token";
 export const resetPasswordRequest = version + "reset_password_request";
 export const resetPassword = version + "reset_password/{token: string}";

@@ -46,7 +46,7 @@ export class DefaultLinkGenerationService implements LinkGenerationService
         let baseUrl = this._configService.getBaseUrl();
 
         baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
-        let route = Routes.confirmEmail.substring(0, Routes.confirmEmail.lastIndexOf("/"))
+        let route = Routes.confirmEmail;
         let url = `${baseUrl}${route}/${user.confirmationToken}`;
         return url;
     }

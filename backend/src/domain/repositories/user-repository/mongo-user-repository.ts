@@ -88,7 +88,7 @@ export class MongoUserRepository implements UserRepository
         if (existingUser)
         {
             let model: UserModel = await this._userModel.findOne({ id: user.id })
-            model.email = user.email;
+            model.email = user.email.toLowerCase();
             model.passwordHash = user.passwordHash;
             model.username = user.name;
             model.confirmed = user.isConfirmedEmail;
@@ -105,7 +105,7 @@ export class MongoUserRepository implements UserRepository
         {
             await this._userModel.create({
                 id: user.id,
-                email: user.email,
+                email: user.email.toLowerCase(),
                 passwordHash: user.passwordHash,
                 username: user.name,
                 confirmed: user.isConfirmedEmail,

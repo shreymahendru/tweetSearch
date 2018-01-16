@@ -15,6 +15,10 @@ import { MongoUserRepository } from "./domain/repositories/user-repository/mongo
 import { LoginController } from "./controllers/user/login-controller";
 import { SignupController } from "./controllers/user/signup-controller";
 import { MongoSearchTermRepository } from "./domain/repositories/search-term-repository/mongo-search-term-repository";
+import { ConfirmEmailController } from "./controllers/auth/confirm-email-controller";
+import { ResetPasswordController } from "./controllers/auth/reset-password-controller";
+import { ResetPasswordRequestController } from "./controllers/auth/reset-password-request-controller";
+import { ValidateTokenController } from "./controllers/auth/vaildate-token-controller";
 
 class Installer implements ComponentInstaller
 {
@@ -39,7 +43,9 @@ class Installer implements ComponentInstaller
     }
 }
 
-const controllers: Array<Function> = [LoginController, SignupController];
+const controllers: Array<Function> = [LoginController, SignupController,
+    ConfirmEmailController, ResetPasswordController,
+    ResetPasswordRequestController, ValidateTokenController];
 
 const app = new WebApp(ConfigurationManager.getConfig<number>("port"))
     .useInstaller(new Installer())

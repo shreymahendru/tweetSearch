@@ -3,7 +3,7 @@ import { UserRepository } from "../../domain/repositories/user-repository/user-r
 import { inject } from "n-ject";
 import * as Routes from "../routes";
 import { given } from "n-defensive";
-import { Validator, strval } from "n-validate";
+import { Validator } from "n-validate";
 import { TokenService } from "../../services/token-service/token-service";
 import { ValidationException } from "../../exceptions/validation-exception";
 
@@ -57,8 +57,7 @@ export class ConfirmEmailController extends Controller
         let validator = new Validator<Model>();
 
         validator.for<string>("confirmationToken")
-            .isRequired()
-            .useValidationRule(strval.hasMaxLength(100));
+            .isRequired();
 
         validator.validate(model);
         if (validator.hasErrors)

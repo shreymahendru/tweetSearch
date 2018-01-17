@@ -13,7 +13,7 @@ export default {
         confirm: confirmationToken => axios.post(`${version}confirmation_email`, { confirmationToken }).then(res => res.data),
         resetPasswordRequest: email => axios.post(`${version}reset_password_request`, { email }),
         validateToken: token => axios.post(`${version}validate_token`, { token }), 
-        resetPassword: ({newPassword, token }) => axios.post(`${version}reset_password`, { newPassword, token })
+        resetPassword: data => axios.post(`${version}reset_password`, { newPassword: data.newPassword, token: data.token })
     },
     // books: {
     //     searchBook: (text) => axios.get(`/api/books/search?q=${text}`).then(res => res.data.books), 

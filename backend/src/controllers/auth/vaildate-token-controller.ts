@@ -2,8 +2,9 @@ import { Controller, route, httpPost, HttpException } from "n-web";
 import { inject } from "n-ject";
 import * as Routes from "../routes";
 import { given } from "n-defensive";
-import { Validator, strval } from "n-validate";
+import { Validator } from "n-validate";
 import { TokenService } from "../../services/token-service/token-service";
+import { PasswordResetTokenInvalidException } from "../../exceptions/password-reset-token-invalid";
 
 
 @httpPost
@@ -25,12 +26,13 @@ export class ValidateTokenController extends Controller
 
     public async execute(model: Model): Promise<any>
     {
+        console.log(model);
         this.validateModel(model);
 
         let isValid = this._tokenService.verifyToken(model.token);
         
         if (!isValid)
-            throw new HttpException(401, "Ivanlid Token");    
+            throw new PasswordResetTokenInvalidException();    
 
         return;
     }
@@ -38,10 +40,9 @@ export class ValidateTokenController extends Controller
     private validateModel(model: Model): void
     {
         let validator = new Validator<Model>();
-
+        console.log(model);
         validator.for<string>("token")
-            .isRequired()
-            .useValidationRule(strval.hasMaxLength(100));
+            .isRequired();
 
         validator.validate(model);
         if (validator.hasErrors)

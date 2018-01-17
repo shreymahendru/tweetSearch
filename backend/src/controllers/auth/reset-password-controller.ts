@@ -1,4 +1,4 @@
-import { Controller, route, httpPost, HttpException } from "n-web";
+import { Controller, route, httpPost } from "n-web";
 import { UserRepository } from "../../domain/repositories/user-repository/user-repository";
 import { inject } from "n-ject";
 import * as Routes from "../routes";
@@ -6,6 +6,8 @@ import { given } from "n-defensive";
 import { Validator, strval } from "n-validate";
 import { TokenService } from "../../services/token-service/token-service";
 import { HashingService } from "../../services/hashing-service/hashing-service";
+import { ValidationException } from "../../exceptions/validation-exception";
+// import { authClaim } from "../../security/app-claims";
 
 
 @httpPost
@@ -16,6 +18,7 @@ export class ResetPasswordController extends Controller
     private readonly _userRepository: UserRepository;
     private readonly _tokenService: TokenService;
     private readonly _hashingService: HashingService;
+    // private readonly _callContext: CallContext;
 
     public constructor(userRepository: UserRepository,
         tokenService: TokenService, hashingService: HashingService)
@@ -26,7 +29,7 @@ export class ResetPasswordController extends Controller
             .ensureHasValue();
         given(hashingService, "hashingService")
             .ensureHasValue();
-
+        
         super();
         this._userRepository = userRepository;
         this._tokenService = tokenService;
@@ -37,6 +40,8 @@ export class ResetPasswordController extends Controller
     public async execute(model: Model): Promise<any>
     {
         this.validateModel(model);
+        
+        // let token = this._callContext.authToken;
 
         let { id } = this._tokenService.decodeToken<{ id: string }>(model.token);
         
@@ -51,18 +56,17 @@ export class ResetPasswordController extends Controller
     private validateModel(model: Model): void
     {
         let validator = new Validator<Model>();
-
-        validator.for<string>("token")
-            .isRequired()
-            .useValidationRule(strval.hasMaxLength(100));
         
         validator.for<string>("newPassword")
             .isRequired()
             .useValidationRule(strval.hasMaxLength(100));
+        
+        validator.for<string>("token")
+            .isRequired();
 
         validator.validate(model);
         if (validator.hasErrors)
-            throw new HttpException(400, validator.errors);
+            throw new ValidationException(validator.errors);
     }
 }
 

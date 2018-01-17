@@ -13,6 +13,7 @@ class ResetPasswordPage extends React.Component {
     
     componentDidMount()
     {
+        console.log(this.props.match.params.token)
         this.props.validateToken(this.props.match.params.token)
             .then(() => this.setState({ loading: false, success: true }))
             .catch(() => this.setState({ loading: false, success: false }));

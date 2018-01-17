@@ -1,4 +1,4 @@
-import { Controller, route, httpPost, HttpException } from "n-web";
+import { Controller, route, httpPost } from "n-web";
 import { UserFactory } from "../../domain/factories/user-factory/user-factory";
 import { UserRepository } from "../../domain/repositories/user-repository/user-repository";
 import { inject } from "n-ject";
@@ -7,6 +7,7 @@ import { given } from "n-defensive";
 import { Validator, strval } from "n-validate";
 import { MailerService } from "../../services/mailer-service/mailer-service";
 import { TokenService } from "../../services/token-service/token-service";
+import { ValidationException } from "../../exceptions/validation-exception";
 
 
 @httpPost
@@ -65,7 +66,7 @@ export class SignupController extends Controller
         let validator = new Validator<Model>();
         validator.for<string>("name")
             .isRequired()
-            .useValidationRule(strval.hasMaxLength(10));
+            .useValidationRule(strval.hasMaxLength(20));
         validator.for<string>("email")
             .isRequired()
             .useValidationRule(strval.hasMaxLength(100));
@@ -75,7 +76,7 @@ export class SignupController extends Controller
 
         validator.validate(model);
         if (validator.hasErrors)
-            throw new HttpException(400, validator.errors);
+            throw new ValidationException(validator.errors);
     }
 }
 

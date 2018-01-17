@@ -10,6 +10,9 @@ import { SearchTermAlreadyExistsException } from "./search-term-already-exisits-
 import { UserTokenExpiredException } from "./user-token-expired-exception";
 import { UserInvalidTokenException } from "./user-invalid-token-exception";
 import { TweetRetrivalException } from "./tweet-retrival-exception";
+import { InvalidCerdentialsException } from "./invalid-credentials-exception";
+import { PasswordResetTokenInvalidException } from "./password-reset-token-invalid";
+import { ValidationException } from "./validation-exception";
 
 @inject("Logger")
 export class AppExceptionHandler extends ExceptionHandler
@@ -31,7 +34,7 @@ export class AppExceptionHandler extends ExceptionHandler
 
         if (exp instanceof UserNotFoundException)
         {
-            await this.handleUserNotFoundException(exp as UserNotFoundException);
+            await this.handleUserNotFoundException(exp);
         }
         else if (exp instanceof UserAlreadyExistsException)
         {
@@ -53,6 +56,18 @@ export class AppExceptionHandler extends ExceptionHandler
         {
             await this.handleTweetRetrivalException(exp);
         }            
+        else if (exp instanceof InvalidCerdentialsException)
+        {
+            await this.handleInvalidCerdentialsException(exp);
+        }   
+        else if (exp instanceof PasswordResetTokenInvalidException)
+        {
+            await this.handlePasswordResetTokenInvalidException(exp);
+        }       
+        else if (exp instanceof ValidationException)
+        {
+            await this.handleValidationExeption(exp);
+        }    
         else
         {
             throw new HttpException(500, "We encountered a problem while processing your request");
@@ -62,7 +77,10 @@ export class AppExceptionHandler extends ExceptionHandler
     private async handleUserNotFoundException(exp: UserNotFoundException): Promise<any>
     {
         await this._logger.logError(exp);
-        throw new HttpException(404, exp.message);
+        throw new HttpException(404, {
+            errors: {
+            global: exp.message
+        }});
     }
     
     private async handleUserAlreadyExistsException(exp: UserAlreadyExistsException): Promise<any>
@@ -93,5 +111,29 @@ export class AppExceptionHandler extends ExceptionHandler
     {
         await this._logger.logError("Can't contact twitter.");
         throw new HttpException(500, exp.message);
+    }
+    
+    private async handleInvalidCerdentialsException(exp: InvalidCerdentialsException)
+    {
+        await this._logger.logWarning("Invalid Creds.");
+        throw new HttpException(401, { errors: { global: exp.message } });
+    }
+    
+    private async handlePasswordResetTokenInvalidException(exp: PasswordResetTokenInvalidException)
+    {
+        await this._logger.logWarning("Invalid password reset token");
+        throw new HttpException(401, {
+            errors: {
+                global: exp.message
+            }
+        });
+    }
+    
+    private async handleValidationExeption(exp: ValidationException)
+    {
+        await this._logger.logError(JSON.stringify(exp.message));
+        throw new HttpException(400, {
+            errors: exp.errors
+        });
     }
 }

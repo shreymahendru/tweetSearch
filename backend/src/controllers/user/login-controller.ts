@@ -1,4 +1,4 @@
-import { Controller, route, httpPost, HttpException } from "n-web";
+import { Controller, route, httpPost } from "n-web";
 import { UserRepository } from "../../domain/repositories/user-repository/user-repository";
 import { inject } from "n-ject";
 import * as Routes from "../routes";
@@ -6,6 +6,9 @@ import { given } from "n-defensive";
 import { Validator, strval } from "n-validate";
 import { HashingService } from "../../services/hashing-service/hashing-service";
 import { TokenService } from "../../services/token-service/token-service";
+import { InvalidCerdentialsException } from "../../exceptions/invalid-credentials-exception";
+import { UserNotFoundException } from "../../exceptions/user-not-found-exception";
+import { ValidationException } from "../../exceptions/validation-exception";
 
 
 @httpPost
@@ -40,10 +43,14 @@ export class LoginController extends Controller
 
         let user = await this._userRepository.getUserByEmail(model.email);
         
+        if (!user)
+            throw new UserNotFoundException(model.email);    
+        
         let isPasswordValid = user.isPasswordValid(model.password, this._hashingService);
         
         if (!isPasswordValid)
-            throw new HttpException(401, "Invaild Credentials");
+            throw new InvalidCerdentialsException();
+            
         
         let token = this._tokenService.generateAuthToken(user);
         
@@ -68,7 +75,7 @@ export class LoginController extends Controller
 
         validator.validate(model);
         if (validator.hasErrors)
-            throw new HttpException(400, validator.errors);
+            throw new ValidationException(validator.errors);
     }
 }
 

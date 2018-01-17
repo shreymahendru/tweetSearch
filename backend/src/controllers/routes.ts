@@ -9,7 +9,7 @@ export const signupUser = version + "signup";
 export const confirmEmail = version + "confirmation_email";
 export const validateToken = version + "validate_token";
 export const resetPasswordRequest = version + "reset_password_request";
-export const resetPassword = version + "reset_password/{token: string}";
+export const resetPassword = version + "reset_password";
 
 // tweeter Search
 export const search = version + "tweet/search?{$search: string}";

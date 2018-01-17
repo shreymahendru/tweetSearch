@@ -3,7 +3,6 @@ import { User } from "../../domain/models/user";
 import { given } from "n-defensive";
 import { inject } from "n-ject";
 import { ConfigService } from "../config-service/config-service";
-import * as Routes from "./../../controllers/routes";
 import { TokenService } from "../token-service/token-service";
 
 @inject("ConfigService", "TokenService")
@@ -33,8 +32,7 @@ export class DefaultLinkGenerationService implements LinkGenerationService
 
         baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
         let token = this._tokenService.generateResetPasswordToken(user.id);
-        let route = Routes.resetPassword.substring(0, Routes.resetPassword.lastIndexOf("/"));
-        let url = `${baseUrl}${route}/${token}`;
+        let url = `${baseUrl}/reset_password/${token}`;
         return url;
     }
     
@@ -46,8 +44,7 @@ export class DefaultLinkGenerationService implements LinkGenerationService
         let baseUrl = this._configService.getBaseUrl();
 
         baseUrl = baseUrl[baseUrl.length - 1] === "/" ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
-        let route = Routes.confirmEmail;
-        let url = `${baseUrl}${route}/${user.confirmationToken}`;
+        let url = `${baseUrl}/confirmation/${user.confirmationToken}`;
         return url;
     }
 }

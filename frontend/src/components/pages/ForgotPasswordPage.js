@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Message } from "semantic-ui-react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import ForgotPasswordFrom from "./../forms/ForgotPasswordFrom";
 import { resetPasswordRequest } from "./../../actions/auth";
+
 
 class ForgotPasswordPage extends React.Component
 {
@@ -19,7 +21,8 @@ class ForgotPasswordPage extends React.Component
     {
         return (
             <div>
-                {this.state.success ? <Message>Email has been sent.</Message> :
+                {this.state.success ?
+                    <Message>Email has been sent. <Link to="/login">Go to Login</Link> </Message> :
                 <ForgotPasswordFrom submit={this.submit} />}
             </div>
         )

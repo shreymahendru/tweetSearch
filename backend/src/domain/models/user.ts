@@ -111,7 +111,7 @@ export class User
         
         let alreadySearched = this._searchHistory
             .find(t =>
-                t.searchTerm.term.toLocaleLowerCase() === SearchTerm.term.toLocaleLowerCase());
+                t.searchTerm.term.toLowerCase() === SearchTerm.term.toLowerCase());
         
         if (alreadySearched)
             return false;

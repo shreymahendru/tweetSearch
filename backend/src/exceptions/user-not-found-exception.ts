@@ -3,8 +3,8 @@ import "n-ext";
 
 export class UserNotFoundException extends ApplicationException
 {
-    public constructor(id: string)
+    public constructor(email: string)
     {
-        super(`User with id ${id} not found`);
+        super(`User with ${email} not found`);
     }
 }

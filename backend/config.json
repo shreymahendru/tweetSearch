@@ -1,6 +1,6 @@
 {
     "mode": "dev",
-    "port": 3000,
+    "port": 8080,
     "baseUrl": "http://localhost:3000", 
     "dbUrl": "mongodb://localhost:27017/tweetSearch",
     "JWTSecret": "mysecret",

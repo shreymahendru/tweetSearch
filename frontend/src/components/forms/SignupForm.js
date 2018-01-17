@@ -8,6 +8,7 @@ class SignupForm extends React.Component
 {
     state = {
         data: {
+            name: "",
             email: "",
             password: ""
         }, 
@@ -23,8 +24,8 @@ class SignupForm extends React.Component
     onSubmit = () => {
         const errors = this.validate(this.state.data);
         this.setState({ errors });
-        this.setState({ loading: true });
         if (Object.keys(errors).length === 0) {
+            this.setState({ loading: true });
             this.props
                 .submit(this.state.data)
                 .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
@@ -35,6 +36,7 @@ class SignupForm extends React.Component
         const errors = {};
         if (!Validator.isEmail(data.email)) errors.email = "Invalid Email"
         if (!data.password) errors.password = "Can't leave password blank";
+        if (!data.name) errors.name = "Can't leave username blank";
         return errors;
     }
     
@@ -43,6 +45,19 @@ class SignupForm extends React.Component
                     
         return (
             <Form onSubmit={this.onSubmit} loading={loading} >
+                <Form.Field error={!!errors.name} >
+                    <label htmlFor="name">Username</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="username"
+                        value={data.name}
+                        onChange={this.onChange}
+                    />
+                    {errors.name && <InlineErrors text={errors.name} />}
+                </Form.Field>
+                
                 <Form.Field error={!!errors.email} >
                     <label htmlFor="email">Email</label>
                     <input

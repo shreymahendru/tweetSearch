@@ -31,7 +31,6 @@ export class UserSearchHistoryController extends Controller
             .ensureIsString()
             .ensure(t => !t.isEmptyOrWhiteSpace());
 
-        // parallelising
         let user = await this._userRepository.get($user_id);
         
         let response = user.searchHistory.map(t => ({

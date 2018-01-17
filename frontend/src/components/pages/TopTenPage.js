@@ -17,7 +17,7 @@ class TopTenPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.nMostSearched(this.props.userId).then(newTopTen => {
+        this.props.nMostSearched(10).then(newTopTen => {
 
             const topTen = [];
             let cntr = 0;

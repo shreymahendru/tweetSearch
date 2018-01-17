@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const Tweet = ({ tweet }) => 
     (
-        <List.Item>
+        <List.Item onClick={() => window.open(tweet.link, '_blank')} >
             {/* <List.Icon name='comment' size='large' verticalAlign='middle' /> */}
             <Image avatar src={tweet.profile_pic} />
             <List.Content>

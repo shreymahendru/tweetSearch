@@ -41,7 +41,7 @@ export class DefaultTwitterService implements TwitterService
                         id: t["id_str"],
                         text: t["text"], 
                         username: t["user"]["screen_name"],
-                        link: t["user"]["url"],
+                        link: `https://twitter.com/${t["user"]["screen_name"]}/status/${t["id_str"]}`,
                         profile_pic: t["user"]["profile_image_url_https"]
                     }));
                 resolve(tweets);

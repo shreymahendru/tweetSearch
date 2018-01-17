@@ -48,8 +48,7 @@ export class User
         
         given(confirmationToken, "confirmationToken")
             .ensureHasValue()
-            .ensureIsString()
-            .ensure(t => !t.isEmptyOrWhiteSpace());
+            .ensureIsString();
         
         given(passwordHash, "passwordHash")
             .ensureHasValue()

@@ -1,6 +1,12 @@
 # tweetSearch
 
 
-To Run this Project:
 
-Run: 
+
+####To install dependecies:
+
+    npm install 
+    
+    
+#### To Run: 
+    npm start

@@ -1,10 +1,11 @@
-import { Controller, route, httpPost, HttpException } from "n-web";
+import { Controller, route, httpPost } from "n-web";
 import { inject } from "n-ject";
 import * as Routes from "../routes";
 import { given } from "n-defensive";
 import { Validator } from "n-validate";
 import { TokenService } from "../../services/token-service/token-service";
 import { PasswordResetTokenInvalidException } from "../../exceptions/password-reset-token-invalid";
+import { ValidationException } from "../../exceptions/validation-exception";
 
 
 @httpPost
@@ -46,7 +47,7 @@ export class ValidateTokenController extends Controller
 
         validator.validate(model);
         if (validator.hasErrors)
-            throw new HttpException(400, validator.errors);
+            throw new ValidationException(validator.errors);
     }
 }
 

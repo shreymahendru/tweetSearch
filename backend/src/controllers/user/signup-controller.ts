@@ -57,7 +57,8 @@ export class SignupController extends Controller
             id: newUser.id,
             token: authToken,
             name: newUser.name,
-            email: newUser.email
+            email: newUser.email,
+            isConfirmed: newUser.isConfirmedEmail
         };
     }
 

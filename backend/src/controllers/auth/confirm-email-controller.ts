@@ -1,10 +1,11 @@
-import { Controller, route, httpPost, HttpException } from "n-web";
+import { Controller, route, httpPost } from "n-web";
 import { UserRepository } from "../../domain/repositories/user-repository/user-repository";
 import { inject } from "n-ject";
 import * as Routes from "../routes";
 import { given } from "n-defensive";
 import { Validator, strval } from "n-validate";
 import { TokenService } from "../../services/token-service/token-service";
+import { ValidationException } from "../../exceptions/validation-exception";
 
 
 @httpPost
@@ -46,7 +47,8 @@ export class ConfirmEmailController extends Controller
             id: user.id,
             name: user.name,
             token: token,
-            email: user.email
+            email: user.email,
+            isConfirmed: user.isConfirmedEmail
         };
     }
 
@@ -60,7 +62,7 @@ export class ConfirmEmailController extends Controller
 
         validator.validate(model);
         if (validator.hasErrors)
-            throw new HttpException(400, validator.errors);
+            throw new ValidationException(validator.errors);
     }
 }
 

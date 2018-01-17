@@ -16,10 +16,11 @@ import addAuthorizationHeader from "./utils/addAuthorizationHeader";
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
-if (localStorage.bookwormJWT) {
-    const payload = decode(localStorage.bookwormJWT);
-    const user = { token: localStorage.bookwormJWT, email: payload.email, confirmed: payload.confirmed };
-    addAuthorizationHeader(localStorage.bookwormJWT);
+if (localStorage.tweetSearchToken) {
+    const payload = decode(localStorage.tweetSearchToken);
+    console.log(payload);
+    const user = { token: localStorage.tweetSearchToken, email: payload.email, isConfirmed: payload.isConfirmedEmail };
+    addAuthorizationHeader(localStorage.tweetSearchToken);
     store.dispatch(userLoggedIn(user));
 }
 

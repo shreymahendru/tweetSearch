@@ -58,7 +58,8 @@ export class LoginController extends Controller
             id: user.id,
             name: user.name,
             token: token,
-            email: user.email
+            email: user.email, 
+            isConfirmed: user.isConfirmedEmail
         };
     }
 

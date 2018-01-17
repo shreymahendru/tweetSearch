@@ -1,0 +1,11 @@
+{
+    "name": "tweet-search",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "concurrently --kill-others \"cd backend && npm start\" \"cd frontend && npm run start\"",
+        "install_all": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\""
+    },
+    "dependencies": {
+        "concurrently": "^3.5.1"
+    }
+}

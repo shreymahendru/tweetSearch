@@ -11,7 +11,7 @@ export const login = (userInfo) => (dispatch) =>
     api.user.login(userInfo).then(user => {
         localStorage.tweetSearchToken = user.token;
         localStorage.tweetSearchId = user.id;
-        addAuthorizationHeader(localStorage.tweetSearchToken);
+        addAuthorizationHeader(user.token);
         dispatch(userLoggedIn(user))
     });
    
@@ -22,7 +22,7 @@ export const userLoggedOut = () => ({
 export const logout = () => (dispatch) => {
     localStorage.removeItem("tweetSearchToken"); 
     localStorage.removeItem("tweetSearchId");
-    addAuthorizationHeader(); // remove auth token from axios
+    addAuthorizationHeader(null); // remove auth token from axios
     dispatch(userLoggedOut());   
 };       
 

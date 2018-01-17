@@ -10,8 +10,8 @@ const TweetList = ({ tweets }) => (
             {tweets.map(tweet =>
                 <Tweet key={tweet.id} tweet={tweet} />
             )}
-        </List> 
-    </Segment>    
+        </List>
+    </Segment>
 )
 
 

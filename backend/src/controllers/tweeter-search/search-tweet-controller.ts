@@ -85,14 +85,17 @@ export class SearchTweetController extends Controller
         {
             let searchTerm = await this._searchTermFactory.create($search);
             await this._searchTermRepository.save(searchTerm);
-            user.AddToHistory(existingSearchTerm);
+            user.AddToHistory(searchTerm);
             await this._userRepository.save(user);
         }
         
         let response = tweets.map(t =>
             ({
                 id: t.id,
-                text: t.text
+                text: t.text,
+                link: t.link,
+                username: t.username,
+                profile_pic: t.profile_pic
             }));
         
         return response;

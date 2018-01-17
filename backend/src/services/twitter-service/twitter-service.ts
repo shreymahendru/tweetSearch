@@ -7,6 +7,9 @@ export interface Tweet
 {
     id: string;
     text: string;
+    username: string;
+    link: string;
+    profile_pic: string;
 }
 
 export interface TwitterConfig

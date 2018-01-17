@@ -53,11 +53,11 @@ const App = ({ location, isAuthenticated }) => <div className="ui container" >
         path="/dashboard"
         exact
         component={DashboardPage} />
-    <UserRoute
+    {/* <UserRoute
         location={location}
         path="/books/new"
         exact
-        component={NewBookPage} />
+        component={NewBookPage} /> */}
 </div>
 
 App.propTypes = {

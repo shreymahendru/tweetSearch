@@ -15,8 +15,9 @@ export default {
         validateToken: token => axios.post(`${version}validate_token`, { token }), 
         resetPassword: data => axios.post(`${version}reset_password`, { newPassword: data.newPassword, token: data.token })
     },
-    // books: {
-    //     searchBook: (text) => axios.get(`/api/books/search?q=${text}`).then(res => res.data.books), 
-    //     fetchPages: (id) => axios.get(`/api/books/fetchPages?goodreadsId=${id}`).then(res => res.data.pages)
-    // }
+    tweet: {
+        search: (text) => axios.get(`${version}tweet/search?$search=${encodeURIComponent(text)}`).then(res => { console.log(res.data); return res.data}), 
+        mostSearched: (n) => axios.get(`${version}tweet/most_searched?$count=${n}`).then(res => res.data),
+        userHistory: (userId) => axios.get(`${version}tweet/search_history?$user_id=${userId}`).then(res => res.data)
+    }
 }   

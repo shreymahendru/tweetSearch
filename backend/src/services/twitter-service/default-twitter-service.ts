@@ -39,7 +39,10 @@ export class DefaultTwitterService implements TwitterService
                 let tweets: Tweet[] = alltweets.map(t =>
                     ({
                         id: t["id_str"],
-                        text: t["text"]
+                        text: t["text"], 
+                        username: t["user"]["screen_name"],
+                        link: t["user"]["url"],
+                        profile_pic: t["user"]["profile_image_url_https"]
                     }));
                 resolve(tweets);
             });

@@ -18,7 +18,8 @@ const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk
 
 if (localStorage.tweetSearchToken) {
     const payload = decode(localStorage.tweetSearchToken);
-    const user = { token: localStorage.tweetSearchToken, email: payload.email, isConfirmed: payload.isConfirmedEmail };
+
+    const user = { token: localStorage.tweetSearchToken, email: payload.email, isConfirmed: payload.isConfirmedEmail, id: localStorage.tweetSearchId};
     addAuthorizationHeader(localStorage.tweetSearchToken);
     store.dispatch(userLoggedIn(user));
 }

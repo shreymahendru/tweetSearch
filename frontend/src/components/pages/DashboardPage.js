@@ -7,11 +7,6 @@ import TweetSearchForm from "./../forms/TweetSearchForm";
 import { searchTweet } from "./../../actions/tweets";
 import TweetList  from "./../lists/TweetList";
 
-// import SearchBookForm from "../forms/SearchBookForm";
-
-// import AddBookCTA from "../ctas/AddBookCTA";
-// import { allBooksSelector } from "./../../reducers/books";
-
 
 class DashboardPage extends React.Component
 {
@@ -46,7 +41,6 @@ class DashboardPage extends React.Component
                 {!this.props.isConfirmed && <ConfirmEmailMessage />}
                 <Segment >
                     <h1>TweetSearch</h1>
-                    {/* <SearchBookForm onBookSelect={this.onBookSelect} /> */}
                     <TweetSearchForm submit={this.search} />
                     {this.state.tweets.length > 0 &&  <TweetList tweets={this.state.tweets} />}
                 </Segment>
@@ -65,11 +59,6 @@ function mapStateToProps(state)
 DashboardPage.propTypes = {
     isConfirmed: PropTypes.bool.isRequired,
     searchTweet: PropTypes.func.isRequired
-    // books: PropTypes.arrayOf(
-    //     PropTypes.shape({
-    //         title: PropTypes.string.isRequired
-    //     }).isRequired
-    // ).isRequired
 }
 
 export default connect(mapStateToProps, { searchTweet })(DashboardPage);

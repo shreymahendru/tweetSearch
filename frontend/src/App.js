@@ -12,8 +12,8 @@ import ConfirmationPage from "./components/pages/ConfirmationPage";
 import ForgotPasswordPage from "./components/pages/ForgotPasswordPage";
 import ResetPasswordPage from './components/pages/ResetPasswordPage';
 import TopNavigation from "./components/navigation/TopNavigation";
-import NewBookPage from "./components/pages/NewBookPage";
-
+import HistoryPage from "./components/pages/HistoryPage";
+import TopTenPage from "./components/pages/TopTenPage";
  
 const App = ({ location, isAuthenticated }) => <div className="ui container" > 
     {isAuthenticated && <TopNavigation />   } 
@@ -53,11 +53,16 @@ const App = ({ location, isAuthenticated }) => <div className="ui container" >
         path="/dashboard"
         exact
         component={DashboardPage} />
-    {/* <UserRoute
+    <UserRoute
         location={location}
-        path="/books/new"
+        path="/history"
         exact
-        component={NewBookPage} /> */}
+        component={HistoryPage} />
+    <UserRoute
+        location={location}
+        path="/top_ten"
+        exact
+        component={TopTenPage} />
 </div>
 
 App.propTypes = {

@@ -10,6 +10,8 @@ const TopNavigation = ({ user, logoutUser}) => (
     <div>
         <Menu secondary pointing >
             <Menu.Item as={Link} to="/dashboard" >Dashboard</Menu.Item>
+            <Menu.Item as={Link} to="/history" >History</Menu.Item>
+            <Menu.Item as={Link} to="/top_ten" >Top 10 most searched</Menu.Item>
             <Menu.Menu position="right">
                 <Dropdown trigger={<Image avatar src={gravatarUrl(user.email)} />}>
                     <Dropdown.Menu>

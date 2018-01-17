@@ -1,9 +1,7 @@
 import React from "react";
 // import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-// import PropTypes from "prop-types";
 import { Grid, Header} from "semantic-ui-react";
-// import { logout } from "./../../actions/auth";
 
 
 const HomePage = () => (

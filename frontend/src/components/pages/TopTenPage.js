@@ -4,9 +4,6 @@ import PropTypes from "prop-types";
 import { Segment, List, Header, Icon } from "semantic-ui-react";
 import { nMostSearched } from "./../../actions/tweets";
 
-
-
-
 class TopTenPage extends React.Component {
     constructor(props) {
         super(props);
@@ -56,16 +53,10 @@ class TopTenPage extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        userId: state.user.id
-    }
-}
 
 TopTenPage.propTypes = {
-    userId: PropTypes.string.isRequired,
     nMostSearched: PropTypes.func.isRequired
 }
 
 
-export default connect(mapStateToProps, { nMostSearched })(TopTenPage);
+export default connect(null, { nMostSearched })(TopTenPage);

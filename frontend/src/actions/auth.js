@@ -30,6 +30,7 @@ export const confirm = token => dispatch =>
     api.user.confirm(token).then(user => {
         localStorage.tweetSearchToken = user.token;
         localStorage.tweetSearchId = user.id;
+        addAuthorizationHeader(user.token);
         dispatch(userLoggedIn(user));
     });
 
